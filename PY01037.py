@@ -1,45 +1,31 @@
-import sys
-import bisect
+import math
 
-def compute_anti_primes(limit):
-    # Initialize the array to count divisors
-    divisor_count = [0] * (limit + 1)
-    
-    # Compute number of divisors for each number
-    for i in range(1, limit + 1):
-        for j in range(i, limit + 1, i):
-            divisor_count[j] += 1
-    
-    # List to store anti-primes
-    anti_primes = []
-    max_divisors = 0
-    
-    # Identify anti-primes
-    for i in range(1, limit + 1):
-        if divisor_count[i] > max_divisors:
-            anti_primes.append(i)
-            max_divisors = divisor_count[i]
-    
-    return anti_primes
+def demUoc(n):
+    cnt = 0
+    for i in range(1, int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            if n // i == i:
+                cnt += 1
+            else:
+                cnt += 2
+    return cnt
 
-def main():
-    input = sys.stdin.read
-    data = input().split()
-    
-    T = int(data[0])
-    queries = [int(data[i]) for i in range(1, T + 1)]
-    
-    # Precompute anti-primes
-    limit = 10**7
-    anti_primes = compute_anti_primes(limit)
-    
+def phanNguyenTo():
     results = []
-    for x in queries:
-        idx = bisect.bisect_left(anti_primes, x)
-        results.append(str(anti_primes[idx]))
-    
-    # Output all results
-    sys.stdout.write("\n".join(results) + "\n")
+    max_divisors = 0
+    for i in range(1, 10000):
+        divisors = demUoc(i)
+        if divisors > max_divisors:
+            max_divisors = divisors
+            results.append(i)
+    return results
 
-if __name__ == "__main__":
-    main()
+results = phanNguyenTo()
+
+t = int(input())
+for _ in range(t):
+    x = int(input())
+    for num in results:
+        if num >= x:
+            print(num)
+            break
